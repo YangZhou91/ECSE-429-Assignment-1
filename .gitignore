@@ -1,4 +1,7 @@
 #ignore for ECSE 429
 
+# For Mac
+.DS_Store
+
 bin/
 tmp/
