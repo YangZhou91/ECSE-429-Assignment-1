@@ -13,6 +13,7 @@ import net.vivin.GenericTreeNode;
 public class TestGenerator {
 	
 	public static StateMachine _sm;
+	public static GenericTree<State> _roundPathTree;
 	
 	public static void main(String[] args) {
 		
@@ -31,20 +32,16 @@ public class TestGenerator {
 			_sm = StateMachine.getInstance();
 		}
 		
-		GenericTree<State> _roundPathTree = new GenericTree<>();
+		_roundPathTree = new GenericTree<>();
 		
-		// Create Root for the tree
-		GenericTreeNode<State> _root = new GenericTreeNode<>();
-		_root.setData(_sm.getStartState());
-		_roundPathTree.setRoot(_root);
 		
-		List<Transition> _transition = findTransitionsFromState(_sm.getState(1));
-		System.out.println(_transition.toString());
+		
+		System.out.println("Root's child:" + _roundPathTree.getRoot().getNumberOfChildren());
 	}
 	
 	/**
-	 * Find all transitions for a particular state
-	 * @param aState
+	 * Find all transitions from a particular state
+	 * @param aState any state
 	 * @return a list contain all transition from aState
 	 */
 	static List<Transition> findTransitionsFromState(State aState){
@@ -65,5 +62,20 @@ public class TestGenerator {
 		return _resultTransitions;
 	}
 	
-	
+	static List<Transition> findTransitionsToState(State aState){
+		List<Transition> _resultTransitions = new ArrayList<>();
+		List<Transition> _allTransitions = _sm.getTransitions();
+
+		String _targetStateName = aState.getName();
+		for (Transition transition : _allTransitions) {
+			String toState = transition.getTo().getName();
+			if (toState.equals(_targetStateName)) {
+				_resultTransitions.add(transition);
+			}
+			else{
+				// do nothing
+			}
+		}
+		return _resultTransitions;
+	}
 }
