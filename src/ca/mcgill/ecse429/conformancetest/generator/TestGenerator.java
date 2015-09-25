@@ -3,6 +3,8 @@ package ca.mcgill.ecse429.conformancetest.generator;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.text.AbstractDocument.LeafElement;
+
 import ca.mcgill.ecse429.conformancetest.statemodel.State;
 import ca.mcgill.ecse429.conformancetest.statemodel.StateMachine;
 import ca.mcgill.ecse429.conformancetest.statemodel.Transition;
@@ -32,11 +34,29 @@ public class TestGenerator {
 			_sm = StateMachine.getInstance();
 		}
 		
+		// Init a RoundPathTree tree
 		_roundPathTree = new GenericTree<>();
-		
+		for (State _state : _sm.getStates()) {
+			
+			// initial state
+			if (_state.equals(_sm.getStartState())) {
+				setRoot(_state);
+				
+				List<StateTreeNode<State>> _children = findChildren((StateTreeNode<State>) _roundPathTree.getRoot());
+				for (StateTreeNode<State> _child : _children) {
+					setChild((StateTreeNode<State>)_roundPathTree.getRoot(), _child);
+				}
+				
+			}
+			// Other states
+			else{
+				List<StateTreeNode<State>> _parents = findParents(childNode)
+			}
+		}
 		
 		
 		System.out.println("Root's child:" + _roundPathTree.getRoot().getNumberOfChildren());
+		System.out.println("Root's child name: " + _roundPathTree.getRoot().getChildAt(0).getData().getName());
 	}
 	
 	/**
@@ -77,5 +97,65 @@ public class TestGenerator {
 			}
 		}
 		return _resultTransitions;
+	}
+	
+	static void setRoot(State rootState){
+		if (_roundPathTree == null) {
+			_roundPathTree = new GenericTree<>();
+		}
+		// Create tree node
+		StateTreeNode<State> _root = new StateTreeNode<>();
+		_root.setData(rootState);
+		
+		_roundPathTree.setRoot(_root);
+	}
+	
+	static void setChild(State parentNode, State childNode){
+		StateTreeNode<State> _parentNode = new StateTreeNode<>();
+		StateTreeNode<State> _childNode = new StateTreeNode<>();
+		
+		_parentNode.setData(parentNode);
+		_childNode.setData(childNode);
+		
+		setChild(_parentNode, _childNode);
+		
+	}
+	
+	static void setChild(StateTreeNode<State> parentNode, StateTreeNode<State> childNode){
+		
+		parentNode.addChild(childNode);
+	}
+	
+	static List<StateTreeNode<State>> findChildren(StateTreeNode<State> parentNode){
+		
+		List<Transition> _fromThisState = findTransitionsFromState(parentNode.getData());
+		List<StateTreeNode<State>> _children = new ArrayList<>();
+		
+		for (Transition _transition : _fromThisState) {
+			StateTreeNode<State> _child = new StateTreeNode<>();
+			_child.setData(_transition.getTo());
+			_children.add(_child);
+		}
+		
+		return _children;
+	}
+	
+	static List<StateTreeNode<State>>  findParents(State aState){
+		return null;
+	}
+	
+	// This method is a little misleading.
+	// It should be a state can have multiple parents instead of node
+	static List<StateTreeNode<State>> findParents(StateTreeNode<State> childNode){
+		
+		List<Transition> _toThisState = findTransitionsToState(childNode.getData());
+		List<StateTreeNode<State>> _parents = new ArrayList<>();
+		
+		for (Transition _transition : _toThisState) {
+			StateTreeNode<State> _parent = new StateTreeNode<>();
+			_parent.setData(_transition.getFrom());
+			_parents.add(_parent);
+		}
+		return _parents;
 	}
 }
