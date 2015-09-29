@@ -17,34 +17,44 @@ import net.vivin.GenericTreeNode;
 public class RoundPathTreeGenerator {
 	
 	public static StateMachine _sm;
-	public static GenericTree<String> _roundPathTree;
+	public static GenericTree<String> roundPathTree;
 	
-	public static final String CCOIN = "ccoinbox.xml";
 	
-	public static void main(String[] args) {
-		
-		PersistenceStateMachine.loadStateMachine(CCOIN);
+	public RoundPathTreeGenerator(String fileName){
+		// load xml
+		PersistenceStateMachine.loadStateMachine(fileName);
 		_sm = StateMachine.getInstance();
-		_roundPathTree = new GenericTree<>();
+		roundPathTree = new GenericTree<>();
 		// set root
 		GenericTreeNode<String> _root = new GenericTreeNode<>();
 		_root.setData(_sm.getStartState().getName());
-		_roundPathTree.setRoot(_root);
-		
+		roundPathTree.setRoot(_root);
 		
 		buildRoundPathTree(_root);
-		printTree(_roundPathTree);
 	}
 	
-	static void buildRoundPathTree(GenericTreeNode<String> aNode){
+	public static GenericTree<String> getRoundPathTree() {
+		return roundPathTree;
+	}
+
+	public static void setRoundPathTree(GenericTree<String> _roundPathTree) {
+		RoundPathTreeGenerator.roundPathTree = _roundPathTree;
+	}
+
+	
+	/**
+	 * Generate a round path tree by specified root
+	 * @param rootNode root node 
+	 */
+	static void buildRoundPathTree(GenericTreeNode<String> rootNode){
 		if (_sm == null) {
 			_sm = StateMachine.getInstance();
 		}
-		for (Transition transition : getOutTransitions(aNode.getData())) {
+		for (Transition transition : getOutTransitions(rootNode.getData())) {
 			State nextState = transition.getTo();
 			GenericTreeNode<String> childNode = new GenericTreeNode<>();
 			childNode.setData(nextState.getName());
-			aNode.addChild(childNode);
+			rootNode.addChild(childNode);
 			boolean isTerminal = isTerminal(childNode);
 			
 			if (!isTerminal) {
@@ -53,14 +63,19 @@ public class RoundPathTreeGenerator {
 		}
 	}
 	
+	/**
+	 * To determine whether a node is a terminal node
+	 * @param aNode
+	 * @return true if it is a terminal
+	 */
 	static boolean isTerminal(GenericTreeNode<String> aNode){
 		boolean isTerminal = false;
-		if (aNode.equals(_roundPathTree.getRoot())) {
+		if (aNode.equals(roundPathTree.getRoot())) {
 			return false;
 		}
 		GenericTreeNode<String> parentNode = aNode.getParent();
 		
-		while (!parentNode.equals(_roundPathTree.getRoot())) {
+		while (!parentNode.equals(roundPathTree.getRoot())) {
 			if (aNode.equals(parentNode)) {
 				return true;
 			}
@@ -72,6 +87,11 @@ public class RoundPathTreeGenerator {
 		
 	}
 	
+	/**
+	 * Get all transitions go out from a state
+	 * @param stateName
+	 * @return a list of transitions
+	 */
 	static List<Transition> getOutTransitions (String stateName){
 		
 		ArrayList<Transition> _outTransitions = new ArrayList<>();
@@ -84,6 +104,10 @@ public class RoundPathTreeGenerator {
 		return _outTransitions;
 	}
 	
+	/**
+	 * Print tree by the level order
+	 * @param tree
+	 */
 	static void printTree(GenericTree<String> tree){
 		Queue<GenericTreeNode<String>> currentLevel = new LinkedList<>();
 		Queue<GenericTreeNode<String>> nextLevel = new LinkedList<>();
