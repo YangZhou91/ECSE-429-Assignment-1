@@ -89,7 +89,7 @@ public class RoundPathTreeGenerator {
 	/**
 	 * Construct a path from tree root to each leaf
 	 * @param root, current node
-	 * @param path
+	 * @param path, the path contain all 
 	 */
 	static void traverse(GenericTreeNode<String>root, LinkedList<GenericTreeNode<String>> path){
 		
@@ -123,16 +123,9 @@ public class RoundPathTreeGenerator {
 			List<Transition> pathTransition = new ArrayList<Transition>();
 			System.out.println(pathNodeList.toString());
 			for (int i = 0; i < pathNodeList.size(); i++) {
-//				for (Transition transition  : transitions) {
-//					if (i+1 < pathList.size()) {
-//						if (transition.getFrom().getName().equals(pathList.get(i).getData()) && transition.getTo().getName().equals(pathList.get(i+1).getData())) {
-//							
-//							pathTransition.add(transition);
-//						}
-//					}
+
 					if (pathNodeList.get(i).getNodeData()!= null) {
 						pathTransition.add(pathNodeList.get(i).getNodeData().getTransition());
-//					}
 				}
 			}
 			roundTripPaths.add(pathTransition);
