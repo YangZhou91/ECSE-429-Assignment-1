@@ -1,3 +1,10 @@
+/**
+ * ECSE 429 Assignment 1
+ * Name: 
+ * Yang Zhou(260401719)
+ * Yan Liu(260152375)
+ */
+
 package ca.mcgill.ecse429.conformancetest.generator;
 
 import java.util.ArrayList;
@@ -35,7 +42,6 @@ public class RoundPathTreeGenerator {
 		
 		traverse(roundPathTree.getRoot());
 		
-//		System.out.println(allPaths.toString());
 	}
 
 	
@@ -43,9 +49,6 @@ public class RoundPathTreeGenerator {
 		return roundPathTree;
 	}
 	
-	public StateMachine getSM() {
-		return _sm;
-	}
 
 	public static void setRoundPathTree(GenericTree<String> _roundPathTree) {
 		RoundPathTreeGenerator.roundPathTree = _roundPathTree;

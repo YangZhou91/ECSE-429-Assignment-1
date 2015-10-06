@@ -137,10 +137,20 @@ public class GenericTreeNode<T> {
         return stringRepresentation;
     }
 
+    /**
+     * Setter for Node data
+     * Additional Data needed for ECSE429 Assignment 1
+     * @param nodeData
+     */
 	public void setNodeData(NodeData nodeData) {
-		// TODO Auto-generated method stub
 		this.nodeData = nodeData;
 	}
+	
+	/**
+	 * Getter for Node data
+	 * Additional Data needed for ECSE 429 Assignment 1
+	 * @return
+	 */
 	public NodeData getNodeData(){
 		return nodeData;
 		

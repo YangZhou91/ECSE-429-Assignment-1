@@ -1,3 +1,11 @@
+/**
+ * ECSE 429 Assignment 1
+ * Name: 
+ * Yang Zhou(260401719)
+ * Yan Liu(260152375)
+ */
+
+
 package ca.mcgill.ecse429.conformancetest.generator;
 
 import ca.mcgill.ecse429.conformancetest.statemodel.Transition;

@@ -1,8 +1,13 @@
+/**
+ * ECSE 429 Assignment 1
+ * Name: 
+ * Yang Zhou(260401719)
+ * Yan Liu(260152375)
+ */
+
+
 package ca.mcgill.ecse429.conformancetest.generator;
 
-import net.vivin.GenericTree;
-import net.vivin.GenericTreeNode;
-import net.vivin.GenericTreeTraversalOrderEnum;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,14 +25,10 @@ public class TestSuiteGenerator {
 
 //		RoundPathTreeGenerator generator = new RoundPathTreeGenerator("legislation.xml");
 		RoundPathTreeGenerator generator = new RoundPathTreeGenerator("ccoinbox.xml");
-//		generator.printTree(generator.getRoundPathTree());
 
 		
-		GenericTree<String> tree = new GenericTree<>();
-		tree = generator.getRoundPathTree();
-		
 		StateMachine sm;
-		sm = generator.getSM();
+		sm = StateMachine.getInstance();
 		String packageName = sm.getPackageName();
 		String className = sm.getClassName();
 		String fix_packageName = packageName.replaceAll(Pattern.quote("."), "/");
