@@ -35,7 +35,7 @@ public class RoundPathTreeGenerator {
 		
 		traverse(roundPathTree.getRoot());
 		
-		System.out.println(allPaths.toString());
+//		System.out.println(allPaths.toString());
 	}
 
 	public static GenericTree<String> getRoundPathTree() {
@@ -62,9 +62,11 @@ public class RoundPathTreeGenerator {
 		}
 		for (Transition transition : getOutTransitions(rootNode.getData())) {
 			State nextState = transition.getTo();
+			System.out.println(transition.toString());
 			GenericTreeNode<String> childNode = new GenericTreeNode<>();
 			childNode.setData(nextState.getName());
 			rootNode.addChild(childNode);
+			
 			boolean isTerminal = isTerminal(childNode);
 
 			if (!isTerminal) {
@@ -81,7 +83,6 @@ public class RoundPathTreeGenerator {
 		
 		path.add(root);
 		if (!root.hasChildren()) {
-//			System.out.println(path.toString());
 			allPaths.add(path);
 		}
 		else {
@@ -106,12 +107,15 @@ public class RoundPathTreeGenerator {
 		for (List<GenericTreeNode<String>> pathList : allPaths) {
 			List<Transition> pathTransition = new ArrayList<Transition>();
 			
-			for (GenericTreeNode<String> nodeInAPath : pathList) {
+			for (int i = 0; i < pathList.size(); i++) {
 				for (Transition transition  : transitions) {
-					if (transition.getFrom().getName().equals(nodeInAPath.getData())) {
-						
-						pathTransition.add(transition);
+					if (i+1 < pathList.size()) {
+						if (transition.getFrom().getName().equals(pathList.get(i).getData()) && transition.getTo().getName().equals(pathList.get(i+1).getData())) {
+							
+							pathTransition.add(transition);
+						}
 					}
+					
 				}
 			}
 			roundTripPaths.add(pathTransition);
