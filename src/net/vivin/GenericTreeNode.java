@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ca.mcgill.ecse429.conformancetest.generator.NodeData;
+
 public class GenericTreeNode<T> {
 
     private T data;
+    private NodeData nodeData;
     private List<GenericTreeNode<T>> children;
     private GenericTreeNode<T> parent;
 
@@ -133,5 +136,14 @@ public class GenericTreeNode<T> {
 
         return stringRepresentation;
     }
+
+	public void setNodeData(NodeData nodeData) {
+		// TODO Auto-generated method stub
+		this.nodeData = nodeData;
+	}
+	public NodeData getNodeData(){
+		return nodeData;
+		
+	}
 }
 

@@ -23,14 +23,10 @@ public void conformanceTest1() {
 assertTrue(SM.getStateFullName().equals("empty"));
 SM.returnQtrs();
 assertTrue(SM.getStateFullName().equals("empty"));
-SM.reset();
-assertTrue(SM.getStateFullName().equals("empty"));
 }
 
 @Test
 public void conformanceTest2() {
-assertTrue(SM.getStateFullName().equals("empty"));
-SM.returnQtrs();
 assertTrue(SM.getStateFullName().equals("empty"));
 SM.reset();
 assertTrue(SM.getStateFullName().equals("empty"));
@@ -43,8 +39,6 @@ SM.addQtr();
 assertTrue(SM.getStateFullName().equals("notAllowed"));
 SM.returnQtrs();
 assertTrue(SM.getStateFullName().equals("empty"));
-SM.reset();
-assertTrue(SM.getStateFullName().equals("empty"));
 }
 
 @Test
@@ -52,8 +46,6 @@ public void conformanceTest4() {
 assertTrue(SM.getStateFullName().equals("empty"));
 SM.addQtr();
 assertTrue(SM.getStateFullName().equals("notAllowed"));
-SM.returnQtrs();
-assertTrue(SM.getStateFullName().equals("empty"));
 SM.reset();
 assertTrue(SM.getStateFullName().equals("empty"));
 }
@@ -67,10 +59,6 @@ SM.addQtr();
 assertTrue(SM.getStateFullName().equals("allowed"));
 SM.returnQtrs();
 assertTrue(SM.getStateFullName().equals("empty"));
-SM.reset();
-assertTrue(SM.getStateFullName().equals("empty"));
-SM.vend();
-assertTrue(SM.getStateFullName().equals("empty"));
 }
 
 @Test
@@ -80,11 +68,7 @@ SM.addQtr();
 assertTrue(SM.getStateFullName().equals("notAllowed"));
 SM.addQtr();
 assertTrue(SM.getStateFullName().equals("allowed"));
-SM.returnQtrs();
-assertTrue(SM.getStateFullName().equals("empty"));
 SM.reset();
-assertTrue(SM.getStateFullName().equals("empty"));
-SM.vend();
 assertTrue(SM.getStateFullName().equals("empty"));
 }
 
@@ -97,8 +81,6 @@ SM.addQtr();
 assertTrue(SM.getStateFullName().equals("allowed"));
 SM.addQtr();
 assertTrue(SM.getStateFullName().equals("allowed"));
-SM.vend();
-assertTrue(SM.getStateFullName().equals("allowed"));
 }
 
 @Test
@@ -108,10 +90,6 @@ SM.addQtr();
 assertTrue(SM.getStateFullName().equals("notAllowed"));
 SM.addQtr();
 assertTrue(SM.getStateFullName().equals("allowed"));
-SM.returnQtrs();
-assertTrue(SM.getStateFullName().equals("empty"));
-SM.reset();
-assertTrue(SM.getStateFullName().equals("empty"));
 SM.vend();
 assertTrue(SM.getStateFullName().equals("empty"));
 }
@@ -132,8 +110,6 @@ public void conformanceTest10() {
 assertTrue(SM.getStateFullName().equals("empty"));
 SM.addQtr();
 assertTrue(SM.getStateFullName().equals("notAllowed"));
-SM.addQtr();
-assertTrue(SM.getStateFullName().equals("allowed"));
 SM.addQtr();
 assertTrue(SM.getStateFullName().equals("allowed"));
 SM.vend();
