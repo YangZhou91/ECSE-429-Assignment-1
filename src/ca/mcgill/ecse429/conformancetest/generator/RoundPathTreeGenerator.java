@@ -105,6 +105,7 @@ public class RoundPathTreeGenerator {
 		}
 		for (List<GenericTreeNode<String>> pathList : allPaths) {
 			List<Transition> pathTransition = new ArrayList<Transition>();
+			
 			for (GenericTreeNode<String> nodeInAPath : pathList) {
 				for (Transition transition  : transitions) {
 					if (transition.getFrom().getName().equals(nodeInAPath.getData())) {
@@ -112,8 +113,9 @@ public class RoundPathTreeGenerator {
 						pathTransition.add(transition);
 					}
 				}
-				roundTripPaths.add(pathTransition);
 			}
+			roundTripPaths.add(pathTransition);
+			System.out.println(pathTransition.size());
 		}
 		
 		return roundTripPaths;
