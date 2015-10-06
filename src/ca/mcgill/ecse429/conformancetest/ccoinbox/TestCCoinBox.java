@@ -101,7 +101,7 @@ SM.addQtr();
 assertTrue(SM.getStateFullName().equals("notAllowed"));
 SM.addQtr();
 assertTrue(SM.getStateFullName().equals("allowed"));
-SM.addQtr(); // manually generated
+SM.addQtr(); //manually added event
 SM.vend();
 assertTrue(SM.getStateFullName().equals("notAllowed"));
 }
@@ -113,8 +113,8 @@ SM.addQtr();
 assertTrue(SM.getStateFullName().equals("notAllowed"));
 SM.addQtr();
 assertTrue(SM.getStateFullName().equals("allowed"));
-SM.addQtr(); // manually generated
-SM.addQtr(); // manually generated
+SM.addQtr(); //manually added event
+SM.addQtr(); //manually added event
 SM.vend();
 assertTrue(SM.getStateFullName().equals("allowed"));
 }
