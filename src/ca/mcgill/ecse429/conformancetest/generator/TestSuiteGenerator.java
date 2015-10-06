@@ -1,6 +1,9 @@
 package ca.mcgill.ecse429.conformancetest.generator;
 
 import net.vivin.GenericTree;
+import net.vivin.GenericTreeNode;
+import net.vivin.GenericTreeTraversalOrderEnum;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,10 +19,11 @@ public class TestSuiteGenerator {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		RoundPathTreeGenerator generator = new RoundPathTreeGenerator("legislation.xml");
-		generator.printTree(generator.getRoundPathTree());
+//		RoundPathTreeGenerator generator = new RoundPathTreeGenerator("ccoinbox.xml");
+//		generator.printTree(generator.getRoundPathTree());
 		
-		//GenericTree<String> tree = new GenericTree<>();
-		//tree = generator.getRoundPathTree();
+		GenericTree<String> tree = new GenericTree<>();
+		tree = generator.getRoundPathTree();
 		
 		StateMachine sm;
 		sm = generator.getSM();

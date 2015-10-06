@@ -1,6 +1,7 @@
 package ca.mcgill.ecse429.conformancetest.generator;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,18 +18,24 @@ public class RoundPathTreeGenerator {
 
 	public static StateMachine _sm;
 	public static GenericTree<String> roundPathTree;
+	public static List<List<GenericTreeNode<String>>> allPaths = new ArrayList<List<GenericTreeNode<String>>>();
 
 	public RoundPathTreeGenerator(String fileName) {
 		// load xml
 		PersistenceStateMachine.loadStateMachine(fileName);
 		_sm = StateMachine.getInstance();
 		roundPathTree = new GenericTree<>();
+		allPaths = new ArrayList<List<GenericTreeNode<String>>>();
 		// set root
 		GenericTreeNode<String> _root = new GenericTreeNode<>();
 		_root.setData(_sm.getStartState().getName());
 		roundPathTree.setRoot(_root);
 
 		buildRoundPathTree(_root);
+		
+		traverse(roundPathTree.getRoot());
+		
+		System.out.println(allPaths.toString());
 	}
 
 	public static GenericTree<String> getRoundPathTree() {
@@ -47,7 +54,7 @@ public class RoundPathTreeGenerator {
 	 * Generate a round path tree by specified root
 	 * 
 	 * @param rootNode
-	 *            root node
+	 *  
 	 */
 	static void buildRoundPathTree(GenericTreeNode<String> rootNode) {
 		if (_sm == null) {
@@ -65,70 +72,51 @@ public class RoundPathTreeGenerator {
 			}
 		}
 	}
-
+	
+	static void traverse (GenericTreeNode<String> root){
+		traverse(root, new LinkedList<GenericTreeNode<String>>());
+	}
+	
+	static void traverse(GenericTreeNode<String>root, LinkedList<GenericTreeNode<String>> path){
+		
+		path.add(root);
+		if (!root.hasChildren()) {
+//			System.out.println(path.toString());
+			allPaths.add(path);
+		}
+		else {
+			for (GenericTreeNode<String> child : root.getChildren()) {
+				traverse(child, new LinkedList<GenericTreeNode<String>>(path));
+			}
+		}
+	}
+	
+	
+	
 	// Find all round trip path tree
 	public List<List<Transition>> findTestCases() {
-		List <Transition> unmodifiableTransitions = StateMachine.getInstance().getTransitions();
-		List<Transition> allTransitions = new ArrayList<Transition>();
-		for (int i = 0; i < unmodifiableTransitions.size(); ++i) {
-			allTransitions.add(unmodifiableTransitions.get(i));
-		}
 		
-		List<State> states_checked = new ArrayList<State>();
-		List<Transition> processed_transition = new ArrayList<Transition>();
-		List<List<Transition>> RoundTripPaths = new ArrayList<List<Transition>>(); 
-		State currentState;
-		boolean pathFound;
-		List <State> FinalStates = new ArrayList<State>();
-		boolean isFinalState;
-		List <State> PotentialFinalStates = new ArrayList<State>();
-		for (int i = 0; i < allTransitions.size(); ++i) {
-			PotentialFinalStates.add(allTransitions.get(i).getTo());
-		}
+		List<List<Transition>> roundTripPaths = new ArrayList<List<Transition>>(); 
 		
-		for (int i = 0; i < PotentialFinalStates.size(); ++i) {
-			isFinalState = true;
-			for (int j = 0; j < allTransitions.size(); ++j) {
-				if (PotentialFinalStates.get(i).equals(allTransitions.get(j).getFrom())) {
-					isFinalState = false;
-				}
-			}
-			if (isFinalState) {
-				FinalStates.add(PotentialFinalStates.get(i));
-			}
+		List<Transition> transitions = _sm.getTransitions();
+		
+		if (allPaths == null) {
+			throw new EmptyStackException();
 		}
-
-		do {
-			currentState = _sm.getStartState();
-			processed_transition = new ArrayList<Transition>();
-			states_checked.clear();
-			states_checked.add(currentState);
-			pathFound = false;
-
-			for (int i = 0; i < allTransitions.size(); ++i) {
-				if (allTransitions.get(i).getFrom().getName().equals(currentState.getName()) == true) {
-					processed_transition.add(allTransitions.get(i));
-					currentState = allTransitions.get(i).getTo();
-
-					if (states_checked.contains(currentState) || FinalStates.contains(currentState)) {
-						allTransitions.remove(i);
-						pathFound = true;
-						i = -1;
-						break;
-					} else {
-						states_checked.add(currentState);
-						i = -1;
+		for (List<GenericTreeNode<String>> pathList : allPaths) {
+			List<Transition> pathTransition = new ArrayList<Transition>();
+			for (GenericTreeNode<String> nodeInAPath : pathList) {
+				for (Transition transition  : transitions) {
+					if (transition.getFrom().getName().equals(nodeInAPath.getData())) {
+						
+						pathTransition.add(transition);
 					}
 				}
+				roundTripPaths.add(pathTransition);
 			}
-
-			if (pathFound == false) {
-				allTransitions.remove(processed_transition.get(processed_transition.size() - 1));
-			} else {
-				RoundTripPaths.add(processed_transition);
-			}
-		} while (allTransitions.size() > 0);
-		return RoundTripPaths;
+		}
+		
+		return roundTripPaths;
 	}
 
 	/**
