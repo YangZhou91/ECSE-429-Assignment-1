@@ -15,7 +15,7 @@ public class TestSuiteGenerator {
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		RoundPathTreeGenerator generator = new RoundPathTreeGenerator("legislation.xml");
+		RoundPathTreeGenerator generator = new RoundPathTreeGenerator("ccoinbox.xml");
 		generator.printTree(generator.getRoundPathTree());
 		
 		//GenericTree<String> tree = new GenericTree<>();
