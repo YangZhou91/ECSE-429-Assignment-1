@@ -77,10 +77,20 @@ public class RoundPathTreeGenerator {
 		}
 	}
 	
+	/**
+	 * Traverse for a root
+	 * @param root, root of a tree
+	 */
 	static void traverse (GenericTreeNode<String> root){
 		traverse(root, new LinkedList<GenericTreeNode<String>>());
 	}
 	
+	
+	/**
+	 * Construct a path from tree root to each leaf
+	 * @param root, current node
+	 * @param path
+	 */
 	static void traverse(GenericTreeNode<String>root, LinkedList<GenericTreeNode<String>> path){
 		
 		path.add(root);
@@ -96,7 +106,10 @@ public class RoundPathTreeGenerator {
 	
 	
 	
-	// Find all round trip path tree
+	/**
+	 * Generate a transition based on traversal path
+	 * @return 2-D array of a list transitions
+	 */
 	public List<List<Transition>> findTestCases() {
 		
 		List<List<Transition>> roundTripPaths = new ArrayList<List<Transition>>(); 
